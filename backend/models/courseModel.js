@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const courseSchema = new Schema({
@@ -12,7 +12,7 @@ const courseSchema = new Schema({
     },
     InstructorUserName: {
         type: String,
-        required: true,
+        required: false ,
     },
     InstructorName: {
         type: String,
@@ -20,7 +20,7 @@ const courseSchema = new Schema({
     },
     Hours: {
         type: Number,
-        required: true,
+        required: false,
     },
     Price: {
         type: Number,
@@ -43,5 +43,5 @@ const courseSchema = new Schema({
 
 }, { timestamps: true });
 
-const Course = mongoose.model('Course', userSchema);
-module.exports = Course;
+const courseModel = mongoose.model('courseModel', courseSchema);
+export default courseModel;
