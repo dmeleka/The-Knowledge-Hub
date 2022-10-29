@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
-import userRoutes from './routes/userRoutes.js';
+import traineeRoutes from './routes/traineeRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import instructorRoutes from './routes/instructorRoutes.js';
 
@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-app.use('/user', userRoutes);
+app.use('/trainee', traineeRoutes);
 app.use('/admin', adminRoutes);
 app.use('/instructor', instructorRoutes);
 
