@@ -1,5 +1,6 @@
 import Admin from '../models/adminModel.js';
 import Instructor from '../models/instructorModel.js';
+import Trainee from '../models/traineeModel.js';
 
 export const addAdmin = async (req,res) =>{
     try{
@@ -39,6 +40,33 @@ export const addInstructor = async (req,res) =>{
             res.send("Instructor created");
         }
     }catch (error){
+        res.status(404).json({message: error.message});
+    }
+}
+
+export const addCorpTrainee = async (req,res) =>{
+    try{
+        const allTrainees = await Trainee.find({});
+        var exists = false;
+        allTrainees.forEach(currentTrainee =>{
+            if(req.body.username == currentTrainee.username){
+                exists = True;
+            }
+        })
+        if(exists){
+            res.send("Trainee already exists");
+        }else{
+            const newTrainee = new Trainee({
+                username: req.body.username,
+                password: req.body.password,
+                FirstName: req.body.FirstName,
+                LastName: req.body.LastName,
+                Corprate: true
+            })
+            await newTrainee.save();
+            res.send("Trainee created");
+        }
+    }catch(error){
         res.status(404).json({message: error.message});
     }
 }
