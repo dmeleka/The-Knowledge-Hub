@@ -2,25 +2,26 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const instructorSchema = new Schema({
-    username:{
+    username: {
         type: String,
         required: true,
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    FirstName:{
+    FirstName: {
         type: String,
         required: true
     },
-    LastName:{
+    LastName: {
         type: String,
         required: true
     },
-    Country:{
+    Country: {
         type: String,
-        required: true
+        required: false,
+        default: "De"
     }
 }, { timestamps: true });
 
