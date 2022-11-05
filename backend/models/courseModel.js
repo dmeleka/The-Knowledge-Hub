@@ -10,9 +10,9 @@ const courseSchema = new Schema({
         type: String,
         required: true,
     },
-    InstructorUserName: {
+    InstructorUsername: {
         type: String,
-        required: false ,
+        required: true,
     },
     InstructorName: {
         type: String,
@@ -28,7 +28,7 @@ const courseSchema = new Schema({
     },
     Rating: {
         type: Number,
-        required: true,
+        required: false,
     },
     Subtitles: {
         type: String,
