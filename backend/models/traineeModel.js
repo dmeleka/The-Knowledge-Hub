@@ -2,25 +2,30 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const traineeSchema = new Schema({
-    username:{
+    username: {
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    FirstName:{
+    FirstName: {
         type: String,
         required: true
     },
-    LastName:{
+    LastName: {
         type: String,
         required: true
     },
-    Corprate:{
+    Corprate: {
         type: Boolean,
         default: false
+    },
+    Country: {
+        type: String,
+        required: false,
+        default: "DE"
     }
 }, { timestamps: true });
 
