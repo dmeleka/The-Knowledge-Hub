@@ -2,6 +2,7 @@ import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import Admin from '../models/adminModel.js';
 import Courses from '../models/courseModel.js';
+import { myCourses } from './instructorController.js';
 
 export const setCountry = async (req, res) => {
     try {
@@ -124,4 +125,20 @@ export const coursesFilter = async (req, res) => {
             }
         })
     }
+}
+
+export const view = async (req,res) => {
+var arr=[];
+const course = await Courses.findOne({Title : req.body.viewTitle});
+res.status(200).json({
+"Title": course.Title,
+"SUBTitle": course.Subtitles,
+"SubtitlesHours": course.SubtitlesHours,
+"Hours": course.Hours,
+"Exercises": course.Exercises,
+
+
+
+
+})
 }
