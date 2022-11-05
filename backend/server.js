@@ -6,6 +6,8 @@ import cors from 'cors';
 import traineeRoutes from './routes/traineeRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import instructorRoutes from './routes/instructorRoutes.js';
+import courseRoutes from './routes/courseRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express();
 const port = process.env.PORT || "8000";
@@ -18,6 +20,8 @@ app.use(cors());
 app.use('/trainee', traineeRoutes);
 app.use('/admin', adminRoutes);
 app.use('/instructor', instructorRoutes);
+app.use('/courses', courseRoutes);
+app.use('/', userRoutes);
 
 
 
