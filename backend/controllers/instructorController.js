@@ -49,25 +49,53 @@ export const myCoursesFilter = async (req, res) => {
     if (req.body.maxPrice.length != 0)
         price = true;
 
-    for (let i = 0; i < allCourses.length; i++) {
-        if (sub && price) {
-            if (req.body.InstructorUsername == allCourses[i].InstructorUsername && req.body.maxPrice >= allCourses[i].Price && req.body.Subject == allCourses[i].Subject)
-                myCourses.push(allCourses[i]);
-        }
-        else if (price) {
-            if (req.body.InstructorUsername == allCourses[i].InstructorUsername && req.body.maxPrice >= allCourses[i].Price)
-                myCourses.push(allCourses[i]);
-        }
-        else {
-            if (req.body.InstructorUsername == allCourses[i].InstructorUsername && req.body.Subject == allCourses[i].Subject)
-                myCourses.push(allCourses[i]);
+    if (sub || price) {
+        for (let i = 0; i < allCourses.length; i++) {
+            if (sub && price) {
+                if (req.body.InstructorUsername == allCourses[i].InstructorUsername && req.body.maxPrice >= allCourses[i].Price && req.body.Subject == allCourses[i].Subject)
+                    myCourses.push(allCourses[i]);
+            }
+            else if (price) {
+                if (req.body.InstructorUsername == allCourses[i].InstructorUsername && req.body.maxPrice >= allCourses[i].Price)
+                    myCourses.push(allCourses[i]);
+            }
+            else {
+                if (req.body.InstructorUsername == allCourses[i].InstructorUsername && req.body.Subject == allCourses[i].Subject)
+                    myCourses.push(allCourses[i]);
+            }
         }
     }
-
+    else {
+        for (let i = 0; i < allCourses.length; i++) {
+            if (req.body.InstructorUsername == allCourses[i].InstructorUsername) {
+                myCourses.push(allCourses[i]);
+            }
+        }
+    }
     res.status(200).json({
         status: 'Success',
         data: {
             myCourses
         }
     })
-} 
+}
+
+export const changeEmail = async (req, res) => {
+    try {
+        await Instructor.updateOne({ username: req.body.username, password: req.body.password }, { $set: { email: req.body.newemail } })
+        res.send("Email changed")
+    }
+    catch {
+
+    }
+}
+
+export const editBio = async (req, res) => {
+    try {
+        await Instructor.updateOne({ username: req.body.username }, { $set: { miniBio: req.body.miniBio } })
+        res.send("MiniBio updated")
+    }
+    catch {
+
+    }
+}
