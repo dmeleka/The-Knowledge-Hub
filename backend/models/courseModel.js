@@ -20,7 +20,7 @@ const courseSchema = new Schema({
     },
     Hours: {
         type: Number,
-        required: false,
+        required: true,
     },
     Price: {
         type: Number,
@@ -28,19 +28,25 @@ const courseSchema = new Schema({
     },
     Rating: {
         type: Number,
+        default: 0,
         required: false,
     },
     Subtitles: {
-        type: String,
+        type: Array,
+        required: true,
+    },
+    SubtitlesHours: {
+        type: Array,
         required: true,
     },
     ShortSummary: {
         type: String,
         required: true,
+    },
+    Exercises: {
+        type: Array,
+        required: true,
     }
-
-
-
 }, { timestamps: true });
 
 const courseModel = mongoose.model('courseModel', courseSchema);
