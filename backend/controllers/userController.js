@@ -2,7 +2,6 @@ import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import Admin from '../models/adminModel.js';
 import Courses from '../models/courseModel.js';
-import { myCourses } from './instructorController.js';
 
 export const setCountry = async (req, res) => {
     try {
