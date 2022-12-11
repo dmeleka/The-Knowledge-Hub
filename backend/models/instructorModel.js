@@ -6,6 +6,10 @@ const instructorSchema = new Schema({
         type: String,
         required: true,
     },
+    email: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: true
@@ -17,6 +21,11 @@ const instructorSchema = new Schema({
     LastName: {
         type: String,
         required: true
+    },
+    miniBio: {
+        type: String,
+        default: "",
+        required: false
     },
     Country: {
         type: String,
