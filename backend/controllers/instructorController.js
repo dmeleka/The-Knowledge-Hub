@@ -14,6 +14,13 @@ export const addCourse = async (req, res) => {
             res.send("Course already exists");
         } else {
             const newCourse = new Course(req.body);
+            let tLinks = [""];
+            let emptyCount = newCourse.Subtitles.length-1;
+            while(emptyCount>0){
+                tLinks.push("");
+                emptyCount--;
+            }
+            newCourse.SubtitlesVideos = tLinks;
             await newCourse.save();
             res.send("Course added");
         }
@@ -97,5 +104,64 @@ export const editBio = async (req, res) => {
     }
     catch {
 
+    }
+}
+
+export const addVideoLink = async(req,res)=>{
+    const subIdx = (await Course.findOne({Title: req.body.Title})).Subtitles.indexOf(req.body.Subtitle);
+    try {
+        await Course.updateOne({Title: req.body.Title, SubtitlesVideos: ""},{$set:{ [`SubtitlesVideos.${subIdx}`] : req.body.Link}})
+        res.status(200).json({
+            status: 'Success'
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            message: error
+        })
+    }
+    
+}
+
+export const addPreviewLink = async(req,res)=>{
+    try {
+        await Course.updateOne({Title:req.body.Title},{CoursePreviewLink:req.body.Link});
+        res.status(200).json({
+            status: 'Success'
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            message: error
+        })
+    }
+}
+export const addQuestion = async(req,res)=>{
+    try{
+        await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesQuestions: req.body.Question}});
+        await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesChoices:{
+            $each:[req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD]
+        }}});
+        await Course.updateOne({Title: req.body.Title},{$push:{ExercisesAnswers: req.body.Answer}});
+        res.status(200).json({
+            status:'Success'
+        })
+    }catch(error){
+        res.status(500).json({
+            status:'Failed',
+            message: error
+        })
+    }
+}
+export const addDiscount = async(req,res)=>{
+    try {
+        await Course.updateOne({Title: req.body.Title},{Discount:req.body.Discount, DiscountTime: req.body.DiscountTime});
+        res.status(200).json({
+            status:'Success'
+        })  
+    } catch (error) {
+        res.status(500).json({
+            status:'Failed'
+        })
     }
 }
