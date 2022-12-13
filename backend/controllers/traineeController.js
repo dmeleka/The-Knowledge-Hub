@@ -36,3 +36,24 @@ export const rateCourse = async (req, res) => {
         })
     }
 }
+export const watchvideo =async (req, res) => {
+    const course = await Courses.findOne({Title : req.body.viewTitle});
+    res.status(200).json({
+        "Url": course.Video  
+        })
+}
+export const openItems = async (req,res) => {
+    var arr=[];
+    const course = await Courses.findOne({Title : req.body.viewTitle});
+    res.status(200).json({
+    "Title": course.Title,
+    "SUBTitle": course.Subtitles,
+    "SubtitlesHours": course.SubtitlesHours,
+    "Hours": course.Hours,
+    "Exercisess": course.Exercises,
+    "Video":course.Video
+    
+    
+    
+    })
+    }
