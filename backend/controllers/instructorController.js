@@ -138,11 +138,30 @@ export const addPreviewLink = async(req,res)=>{
 }
 export const addQuestion = async(req,res)=>{
     try{
-        await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesQuestions: req.body.Question}});
-        await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesChoices:{
-            $each:[req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD]
-        }}});
-        await Course.updateOne({Title: req.body.Title},{$push:{ExercisesAnswers: req.body.Answer}});
+        // await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesQuestions: req.body.Question}});
+        // await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesChoices:{
+        //     $each:[req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD]
+        // }}});
+        // await Course.updateOne({Title: req.body.Title},{$push:{ExercisesAnswers: req.body.Answer}});
+        let answerIdx = null;
+        if(req.body.Answer.toLowerCase() == "a"){
+            answerIdx = 0;
+        }else if(req.body.Answer.toLowerCase() == "b"){
+            answerIdx = 1;
+        }else if(req.body.Answer.toLowerCase() == "c"){
+            answerIdx = 2;
+        }else{
+            answerIdx = 3;
+        }
+        const question = {
+            title:req.body.Question,
+            choices:[req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD],
+            answer: answerIdx
+        };
+        const exam = [req.body.Duration, req.body.ExamTitle, [question]];
+        await Course.updateOne({Title:req.body.Title}, {
+            $push: {ExercisesQuestions: exam}
+        })
         res.status(200).json({
             status:'Success'
         })
