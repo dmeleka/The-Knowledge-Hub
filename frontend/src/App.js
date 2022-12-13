@@ -1,24 +1,39 @@
 import './App.css';
-import Home from './components/Home';
-import Navbar from './components/Navbar';
-import About from './components/About';
-import Services from './components/Services';
-import Contact from './components/Contact';
-import { Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Footer from './components/Footer';
+import Home from './components/Home/Home';
+import Navbar from './components/Home/Navbar'
+import { Routes, Route, useParams } from 'react-router-dom';
+import Login from './components/User/Login';
+import Footer from './components/Home/Footer';
+import Register from './components/User/Register';
+import TraineeHome from './components/Trainee/TraineeHome'
+import InstructorHome from './components/Instructor/InstuctorHome'
+import AdminHome from './components/Admin/AdminHome';
+import ForgotPassword from './components/User/ForgotPassword';
+import ResetPassword from './components/User/ResetPassword';
+import Courses from './components/Courses/Courses';
+import Course from './components/Courses/Course';
+import SearchResults from './components/Courses/SearchResults';
+import Exam from './components/Courses/Exam'
 
 function App() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/service" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/register" element={<Register />} /> */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/traineeHome" element={<TraineeHome />} />
+        <Route path="/instructorHome" element={<InstructorHome />} />
+        <Route path="/adminHome" element={<AdminHome />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/resetPassword/:id/:token" element={<ResetPassword />} />
+        <Route path="/searchResults/:search" element={<SearchResults />} />
+        <Route path="/courses" element={<Courses />} />
+        <Route path="/course/:title" element={<Course />} />
+        {/* <Route path="/course/:title/:exercise" element={<MCQ />} /> */}
+        <Route path="/course/exam" element={<Exam />} />
+        <Route path="*" element={<Home />} />
       </Routes>
       <Footer />
     </>

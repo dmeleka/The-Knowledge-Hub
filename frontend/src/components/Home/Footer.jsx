@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const Footer = () => {
     return (
         <div>
-            <footer className="footer text-white bg-primary">
+            <footer className="footer text-black">
                 <div className="container">
                     <footer className="py-5">
                         <div className="row">
@@ -14,11 +14,11 @@ const Footer = () => {
                             <div className="col-2">
                                 <h5>Section</h5>
                                 <ul className="nav flex-column">
-                                    <li className="nav-item" mb-2><NavLink to="/" className="nav-link p-0 text-white">Home</NavLink></li>
-                                    <li className="nav-item" mb-2><NavLink to="#" className="nav-link p-0 text-white">Features</NavLink></li>
-                                    <li className="nav-item" mb-2><NavLink to="#" className="nav-link p-0 text-white">Pricing</NavLink></li>
-                                    <li className="nav-item" mb-2><NavLink to="#" className="nav-link p-0 text-white">FAQs</NavLink></li>
-                                    <li className="nav-item" mb-2><NavLink to="/about" className="nav-link p-0 text-white">About</NavLink></li>
+                                    <li className="nav-item" mb-2><NavLink to="/" className="nav-link p-0 text-black">Home</NavLink></li>
+                                    <li className="nav-item" mb-2><NavLink to="#" className="nav-link p-0 text-black">Features</NavLink></li>
+                                    <li className="nav-item" mb-2><NavLink to="#" className="nav-link p-0 text-black">Pricing</NavLink></li>
+                                    <li className="nav-item" mb-2><NavLink to="#" className="nav-link p-0 text-black">FAQs</NavLink></li>
+                                    <li className="nav-item" mb-2><NavLink to="/about" className="nav-link p-0 text-black">About</NavLink></li>
                                 </ul>
                             </div>
                             <div className="col-4 offset-1">
@@ -27,7 +27,7 @@ const Footer = () => {
                                     <p>Monthly digest of whats new and exciting from us.</p>
                                     <div className="d-flex w-100 gap-2">
                                         <input id="newsletter1 " type="text" className="form-control" placeholder="Email address" />
-                                        <button className="btn btn-primary rounded-pill px-4" type="button">Subscribe</button>
+                                        <button className="sub-btn" type="button">Subscribe</button>
                                     </div>
                                 </form>
                             </div>

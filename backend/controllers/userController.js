@@ -2,6 +2,29 @@ import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import Admin from '../models/adminModel.js';
 import Courses from '../models/courseModel.js';
+import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = "dhajdbajdbaldsjadlkabdkajbdklabdkadbfhabaiwaknzkvbnirsughiosL"
+
+export const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"]
+    if (!token) {
+        res.send("No token found")
+        res.json({ auth: false, message: "failed to auth" })
+    }
+    else {
+        jwt.verify(token, JWT_SECRET, (err, decoded) => {
+            if (err) {
+                res.json({ auth: false, message: "failed to auth" })
+            }
+            else {
+                req.UserId = decoded.id;
+                next();
+            }
+        })
+    }
+}
 
 export const setCountry = async (req, res) => {
     try {
@@ -24,21 +47,25 @@ export const login = async (req, res) => {
     const userA = await Admin.findOne({ username: req.body.username, Password: req.body.password })
     try {
         if (userI) {
-            // const id = userI._id.toString();
-            // const token = jwt.sign({ id }, "secret", {
-            //     expiresIn: 300,
-            // })
-            res.json({ auth: true, res: userI, type: "I" })
+            const id = userI._id.toString();
+            const token = jwt.sign({ id }, JWT_SECRET, {
+                expiresIn: 300,
+            })
+            res.json({ auth: true, token: token, res: userI, type: "I" })
         }
         else if (userT) {
-            // const id = userT._id.toString();
-            // const token = jwt.sign({ id }, "secret", {
-            //     expiresIn: 300,
-            // })
-            res.json({ auth: true, res: userT, type: "T" })
+            const id = userT._id.toString();
+            const token = jwt.sign({ id }, JWT_SECRET, {
+                expiresIn: 300,
+            })
+            res.json({ auth: true, token: token, res: userT, type: "T" })
         }
         else if (userA) {
-            res.json({ auth: true, res: userT, type: "A" })
+            const id = userA._id.toString();
+            const token = jwt.sign({ id }, JWT_SECRET, {
+                expiresIn: 300,
+            })
+            res.json({ auth: true, token: token, res: userA, type: "A" })
         }
         else {
             res.json({ auth: false, message: "No user found" })
@@ -53,36 +80,58 @@ export const search = async (req, res) => {
     const courses = await Courses.find({});
     const course = [];
     for (let i = 0; i < courses.length; i++) {
-        if (req.body.search == courses[i].Title) {
+        if ((courses[i].Title).toLowerCase().startsWith(req.body.search)) {
             course.push(courses[i]);
-            res.status(200).json({
-                status: 'Success',
-                data: {
-                    course
-                }
-            })
-        }
-        else if (req.body.search == courses[i].InstructorName) {
-            course.push(courses[i]);
-            res.status(200).json({
-                status: 'Success',
-                data: {
-                    course
-                }
-            })
 
         }
-        else if (req.body.search == courses[i].Subject) {
+        else if ((courses[i].InstructorName).toLowerCase().startsWith(req.body.search)) {
             course.push(courses[i]);
-            res.status(200).json({
-                status: 'Success',
-                data: {
-                    course
-                }
-            })
+
+        }
+        else if ((courses[i].Subject).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
         }
     }
-    res.status(404).json({ message: "Not Found" });
+    if (courses.length != 0) {
+        res.status(200).json({
+            status: 'Success',
+            data: {
+                course
+            }
+        })
+    }
+    else {
+        res.status(404).json({ message: "Not Found" });
+    }
+}
+
+export const searchView = async (req, res) => {
+    const courses = await Courses.find({});
+    const course = [];
+    for (let i = 0; i < courses.length; i++) {
+        if ((courses[i].Title).toLowerCase().startsWith(req.params.search)) {
+            course.push(courses[i]);
+
+        }
+        else if ((courses[i].InstructorName).toLowerCase().startsWith(req.params.search)) {
+            course.push(courses[i]);
+
+        }
+        else if ((courses[i].Subject).toLowerCase().startsWith(req.params.search)) {
+            course.push(courses[i]);
+        }
+    }
+    if (courses.length != 0) {
+        res.status(200).json({
+            status: 'Success',
+            data: {
+                course
+            }
+        })
+    }
+    else {
+        res.status(404).json({ message: "Not Found" });
+    }
 }
 
 export const coursesFilter = async (req, res) => {
@@ -153,13 +202,11 @@ export const coursesFilter = async (req, res) => {
 
 export const view = async (req, res) => {
     var arr = [];
-    const course = await Courses.findOne({ Title: req.body.viewTitle });
+    const course = await Courses.findOne({ Title: req.params.view });
     res.status(200).json({
-        "Title": course.Title,
-        "Subtitles": course.Subtitles,
-        "Subtitles Hours": course.SubtitlesHours,
-        "Hours": course.Hours,
-        "Exercises": course.Exercises
+        data: {
+            course
+        }
     });
 }
 
@@ -172,4 +219,82 @@ export const changePassword = async (req, res) => {
     catch {
 
     }
+}
+
+export const forgotPassword = async (req, res) => {
+    const userI = await Instructor.findOne({ email: req.body.email })
+    const userT = await Trainee.findOne({ email: req.body.email })
+    let user = null;
+    if (!userI && !userT) {
+        res.json({ status: "User doesnt exist" })
+    }
+    else {
+        if (userT)
+            user = userT
+        if (userI)
+            user = userI
+    }
+    if (user != null) {
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+            expiresIn: '5m'
+        })
+        const link = `http://localhost:3000/resetPassword/${user._id}/${token}`
+        console.log(link)
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'tkh.noreply@gmail.com',
+                pass: 'zgxvmssqudlhlozw'
+            }
+        });
+
+        const mailOptions = {
+            from: 'noreply.theknowledgehub@gmail.com',
+            to: user.email,
+            subject: 'Reset Password',
+            html: link
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.json({ auth: true, token: token, res: user })
+            }
+        });
+    }
+}
+
+export const authResetPassword = async (req, res) => {
+    const { id, token } = req.params
+    const userI = await Instructor.findOne({ _id: id })
+    const userT = await Trainee.findOne({ _id: id })
+    let user = null;
+    if (!token) {
+        res.json({ auth: false, message: "No token found" })
+    }
+    else {
+        jwt.verify(token, JWT_SECRET, (err) => {
+            if (err) {
+                res.json({ auth: false, message: "failed to auth" })
+            }
+            else {
+                if (!userI && !userT) {
+                    res.json({ auth: false })
+                }
+                else {
+                    res.json({ auth: true })
+                }
+            }
+        })
+    }
+}
+
+export const resetPassword = async (req, res) => {
+    const { id } = req.params
+    await Instructor.updateOne({ _id: id }, { $set: { password: req.body.password } })
+    await Trainee.updateOne({ _id: id }, { $set: { password: req.body.password } })
+    res.json({ success: true })
+
 }
