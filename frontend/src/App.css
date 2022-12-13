@@ -1,8 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+/* Cards */
+.card {
+    transition: all 0.5s ease;
+}
+
+.card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+}
+
+/* Form */
+.form {
+    background: rgb(30, 80, 202);
+    background: linear-gradient(90deg, rgb(30, 80, 202) 30%, rgba(0, 212, 255, 1) 100%);
+}
+
+/* Footer */
+.footer {
+    background: rgb(245, 245, 245);
+}
+
 /* Home */
 #home {
-    background: rgb(0, 101, 219);
-    background: linear-gradient(90deg, rgb(0, 101, 219), rgba(0, 212, 255, 1) 100%);
+    /* background: rgb(30, 80, 202);
+    background: linear-gradient(90deg, rgb(30, 80, 202), rgba(0, 212, 255, 1) 100%); */
+    color: black;
     min-height: 500px;
+}
+
+#about {
+    background-color: rgb(245, 245, 245);
 }
 
 /* Cards */
@@ -16,12 +43,448 @@
 
 /* Form */
 .form {
-    background: rgb(0, 101, 219);
-    background: linear-gradient(90deg, rgb(0, 101, 219) 30%, rgba(0, 212, 255, 1) 100%);
+    background: rgb(30, 80, 202);
+    background: linear-gradient(90deg, rgb(30, 80, 202) 30%, rgba(0, 212, 255, 1) 100%);
 }
 
-/* Footer */
-.footer {
-    background: rgb(0, 101, 219);
-    background: linear-gradient(90deg, rgb(0, 101, 219) 40%, rgba(0, 212, 255, 1) 100%);
+/* Search */
+.search-div {
+    margin-right: 180px;
+}
+
+.search {
+    height: 35px;
+    width: 250px;
+    border-style: none;
+    outline-style: solid;
+    outline-width: 1px;
+    outline-color: rgb(99, 99, 99);
+    font-size: 13px;
+    align-self: center;
+    padding-left: 10px;
+}
+
+.search-btn {
+    width: 37px;
+    height: 37px;
+    background-color: rgb(30, 80, 202);
+    border: none;
+    color: white;
+    /* margin-left: 2px; */
+    padding-bottom: 3px;
+}
+
+.search-btn:hover {
+    background-color: rgb(16, 61, 176);
+}
+
+.sub-btn {
+    border-radius: 3px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 6px;
+    padding-right: 6px;
+    background-color: rgb(30, 80, 202);
+    border: none;
+    color: white;
+    margin: auto;
+    text-decoration: none;
+    font-size: small;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.col-3 {
+    color: rgb(30, 80, 202);
+}
+
+.home-head {
+    font-size: 80px;
+}
+
+/* Register */
+.register-btn {
+    border-radius: 2px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: rgb(30, 80, 202);
+    border: none;
+    color: white;
+    margin: auto;
+    text-decoration: none;
+    font-size: small;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.register-btn:hover {
+    background-color: rgb(16, 61, 176);
+    color: white;
+}
+
+.register-btn-big {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 4px;
+    background-color: rgb(30, 80, 202);
+    border: none;
+    color: white;
+    margin: auto;
+    text-decoration: none;
+    font-size: larger;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.register-btn-big:hover {
+    background-color: rgb(16, 61, 176);
+    color: white;
+}
+
+.courses-btn-big {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 4px;
+    background-color: white;
+    border: 3px solid;
+    border-color: rgb(30, 80, 202);
+    color: rgb(30, 80, 202);
+    margin: auto;
+    text-decoration: none;
+    font-size: larger;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.courses-btn-big:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+/* Login */
+.login-btn {
+    margin-left: 10px;
+    margin-right: 5px;
+    font-size: smaller;
+    text-decoration: none;
+}
+
+.login-btn:hover {
+    color: rgb(16, 61, 176);
+}
+
+/* Country Dropdown */
+.language-img {
+    width: 35px;
+    /* border-radius: 5px; */
+}
+
+.drop-down-body {
+    position: relative;
+}
+
+.drop-down-btn {
+    margin-left: 10px;
+    background-color: #fff;
+    cursor: pointer;
+    border: none;
+}
+
+.language-menu {
+    padding: 0;
+    position: absolute;
+    left: 5px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility0.4s;
+    list-style-type: none;
+}
+
+.language-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.4s;
+    list-style-type: none;
+}
+
+.drop-down-btn:hover+.language-menu,
+.language-menu:hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+.language-item:hover {
+    background-color: lightgrey;
+}
+
+nav .navbar-brand {
+    color: rgb(0, 86, 210);
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+nav .navbar-brand:hover {
+    transition: 0.3s;
+    color: rgb(16, 61, 176);
+}
+
+/* Main Menu */
+
+.main-drop-down-body {
+    position: relative;
+    margin-right: 350px;
+}
+
+.main-menu {
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    top: 49px;
+    left: 5px;
+    background-color: #ffff;
+    border-radius: 3px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0.3s;
+    list-style-type: none;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+}
+
+.navbar-brand:hover+.main-menu,
+.main-menu:hover {
+    transition-delay: 0s;
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.4s;
+    list-style-type: none;
+}
+
+.menu-link:hover {
+    color: rgb(16, 61, 176);
+}
+
+.menu-link {
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    font-weight: light;
+    text-decoration: none;
+    color: black;
+}
+
+/* Logo */
+
+.logo {
+    scale: 0.7;
+    margin-right: 10px;
+}
+
+#main-container {
+    min-width: 100%;
+    max-height: 42px;
+    justify-content: center;
+}
+
+.navbar {
+    border: 1px double rgb(224, 224, 224);
+}
+
+/* Courses */
+.card-deck {
+    margin-top: 50px;
+    justify-content: left;
+    min-width: 75.72%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin: 10px;
+    cursor: pointer;
+    flex: 0 0 30%;
+    font-size: 12px;
+}
+
+.card-text {
+    text-decoration: none;
+}
+
+.filters {
+    margin-top: 50px;
+    min-width: 350px;
+}
+
+.courses-container {
+    display: flex;
+    background-color: rgb(245, 245, 245)
+}
+
+.free {
+    background-color: rgb(242, 242, 242);
+    font-size: 15px;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 270px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.card-img-top {
+    scale: 0.5;
+}
+
+.cardlink {
+    text-decoration: none;
+    color: black;
+}
+
+/* Course */
+.top {
+    display: flex;
+    background: linear-gradient(90deg, rgb(26, 73, 194) 20%, rgba(0, 212, 255, 1) 100%);
+}
+
+.content {
+    margin-top: 100px;
+    margin-left: 150px;
+    margin-bottom: 70px;
+}
+
+.course {
+    color: white;
+}
+
+.title {
+
+    color: white;
+}
+
+.inst {
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: 200;
+}
+
+.inst:hover {
+    color: rgb(224, 224, 224);
+}
+
+.enroll {
+    border-radius: 4px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    background-color: rgb(245, 245, 245);
+    border: none;
+    color: black;
+    margin: auto;
+    text-decoration: none;
+    font-size: medium;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    display: inline-block;
+    /* justify-content: center; */
+    margin-top: 50px;
+
+}
+
+.enroll:hover {
+    color: black;
+    background-color: rgb(224, 224, 224);
+}
+
+.starts {
+    margin: 0px;
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    max-width: 80px;
+
+}
+
+.rating-text {
+    color: rgb(197, 197, 17);
+    margin: 0px;
+    font-size: 15px;
+    font-weight: 600;
+    max-width: 80px;
+    margin-left: 10px;
+}
+
+.rating {
+    display: flex;
+}
+
+.video {
+    margin-left: 230px;
+}
+
+/* MCQ*/
+.quiz,
+.choices {
+    list-style-type: none;
+    padding: 0;
+}
+
+.choices li {
+    margin-bottom: 5px;
+}
+
+.choices label {
+    display: flex;
+    align-items: center;
+}
+
+.choices label,
+input[type="radio"] {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+}
+
+.view-results {
+    padding: 1rem;
+    cursor: pointer;
+    font-size: inherit;
+    color: white;
+    background: teal;
+    border-radius: 8px;
+    margin-right: 5px;
+}
+
+.my-results {
+    padding: 1rem;
+    border: 1px solid goldenrod;
 }
