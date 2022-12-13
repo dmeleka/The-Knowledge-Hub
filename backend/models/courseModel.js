@@ -59,14 +59,6 @@ const courseSchema = new Schema({
         type: Array,
         required: false,
     },
-    ExercisesChoices:{
-        type: Array,
-        required: false,
-    },
-    ExercisesAnswers:{
-        type: Array,
-        required:false,
-    },
     CoursePreviewLink: {
         type: String,
         required: false,
