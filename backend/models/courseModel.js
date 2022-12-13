@@ -26,6 +26,14 @@ const courseSchema = new Schema({
         type: Number,
         required: true,
     },
+    Discount: {
+        type: Number,
+        default: 0,
+    },
+    DiscountTime:{
+        type: Number,
+        default: 0,
+    },
     Rating: {
         type: Number,
         default: 0,
@@ -39,13 +47,30 @@ const courseSchema = new Schema({
         type: Array,
         required: true,
     },
+    SubtitlesVideos: {
+        type: Array,
+        required: false,
+    },
     ShortSummary: {
         type: String,
         required: true,
     },
-    Exercises: {
+    ExercisesQuestions: {
         type: Array,
-        required: true,
+        required: false,
+    },
+    ExercisesChoices:{
+        type: Array,
+        required: false,
+    },
+    ExercisesAnswers:{
+        type: Array,
+        required:false,
+    },
+    CoursePreviewLink: {
+        type: String,
+        required: false,
+        default: ""
     }
 }, { timestamps: true });
 
