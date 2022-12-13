@@ -32,7 +32,7 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/course/:title" element={<Course />} />
         {/* <Route path="/course/:title/:exercise" element={<MCQ />} /> */}
-        <Route path="/course/exam" element={<Exam />} />
+        <Route path="/course/:CourseTitle/:ExamTitle" element={<Exam />} />
         <Route path="*" element={<Home />} />
       </Routes>
       <Footer />
