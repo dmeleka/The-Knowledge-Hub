@@ -20,7 +20,7 @@ const courseSchema = new Schema({
     },
     Hours: {
         type: Number,
-        required: false,
+        required: true,
     },
     Price: {
         type: Number,
@@ -31,14 +31,25 @@ const courseSchema = new Schema({
         required: false,
     },
     Subtitles: {
-        type: String,
+        type: Array,
+        required: true,
+    },
+    SubtitlesHours: {
+        type: Array,
         required: true,
     },
     ShortSummary: {
         type: String,
         required: true,
+    },
+    Exercises: {
+        type: Array,
+        required: true,
+    },
+    Video:{
+        type: String ,
+        required: true,
     }
-
 
 
 }, { timestamps: true });
