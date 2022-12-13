@@ -17,3 +17,25 @@ export const getAllCourses = async (req, res) => {
     }
 }
 
+export const getExam = async(req,res) =>{
+    try {
+        const exams = (await Course.findOne({Title:req.params.CourseTitle})).ExercisesQuestions;
+        let e = null;
+        for(let i = 0; i < exams.length; i++){
+            if(exams[i][1] == req.params.ExamTitle){
+            e = exams[i];
+            }
+        }
+        res.status(200).json({
+            status:'Success',
+            data: e
+        })
+    } catch (error) {
+        res.status(500).json({
+            status:'Failed',
+            message: error
+        })
+    }
+    
+}
+
