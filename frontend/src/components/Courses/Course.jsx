@@ -10,6 +10,7 @@ const Course = () => {
     const { title } = useParams()
     const [course, setCourse] = useState([])
 
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -43,6 +44,7 @@ const Course = () => {
                     </div>
 
                 </div>
+                <NavLink onClick={navigate('/Title/??????')} to="/">??????</NavLink>
                 <iframe className="video" width="966" height="543" src="https://www.youtube.com/embed/fzxEECHnsvU" title="Material UI 5 (MUI) React Tutorial | MUI Responsive Real Project" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
             </section >
