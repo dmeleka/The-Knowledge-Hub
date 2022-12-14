@@ -45,7 +45,7 @@ const Course = () => {
                     </div>
                 </div>
                 <iframe className="video" width="966" height="543" src="https://www.youtube.com/embed/fzxEECHnsvU" title="Material UI 5 (MUI) React Tutorial | MUI Responsive Real Project" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <button onClick={postData}>Exam2</button>
+                {/* <button onClick={postData}>Exam2</button> */}
             </section >
         </div >
     )
