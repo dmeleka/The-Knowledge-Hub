@@ -1,5 +1,5 @@
 import express from 'express';
-import { setCountry, login, search, coursesFilter, view, changePassword, resetPassword, forgotPassword, verifyJWT, authResetPassword, searchView } from '../controllers/userController.js';
+import { setCountry, login, search, coursesFilter, view, changePassword, resetPassword, forgotPassword, authResetPassword, searchView } from '../controllers/userController.js';
 
 const router = express.Router();
 
