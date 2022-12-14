@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
-import { duration, makeStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Question from './Question';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AiOutlineStar } from 'react-icons/ai';
 import Navbar from '../Home/Navbar';
 
@@ -72,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '0.5rem 1rem',
         borderRadius: '0.5rem',
         border: 'none',
+        marginRight: '10px',
         cursor: 'pointer',
         '&:hover': {
             backgroundColor: '#595757',
@@ -127,29 +128,20 @@ const Exam = () => {
     const [alert, setAlert] = useState(null);
 
 
-    const { CourseTite } = useParams()
+    const { CourseTitle } = useParams()
     const { ExamTitle } = useParams()
-    const [d, setD] = useState(0)
-    const [t, setT] = useState('')
-    const [qs, setQuestions] = useState([])
+    const [exam, setExam] = useState({ duration: 0, title: '', questions: [] })
+    let d = true
 
-
-    const postData = () => {
-        Axios.post(`http://localhost:8000/courses/getExam/${CourseTite}/${ExamTitle}`
-        ).then(res => {
-            setQuestions(res.data.questions[0]);
-            setT(res.data.title)
-            setD(res.data.duration)
+    Axios.get(`http://localhost:8000/courses/getExam/${CourseTitle}/${ExamTitle}`
+    ).then(res => {
+        setExam({
+            ...exam,
+            duration: res.data.duration,
+            title: res.data.title,
+            questions: res.data.questions
         })
-    }
-
-    // const exam = {
-    //     duration: d,
-    //     title: t,
-    //     questions: qs,
-    // };
-
-    console.log(exam);
+    })
 
     const updateAnswer = (answerText) => {
         const answerNumber =
@@ -198,124 +190,126 @@ const Exam = () => {
     };
 
     return (
-        <div className={classes.exam}>
-            <header>
-                <h1>Short Exam: {exam?.title}</h1>
-                <p
-                    style={{
-                        color: 'gray',
-                        fontSize: '0.8rem',
-                        textAlign: 'center',
-                    }}
-                >
-                    {exam?.title} | {exam?.questions.length} questions |{' '}
-                    {exam?.duration.minutes}
-                    minutes
-                </p>
-            </header>
-            {alert && (
-                <Alert severity={alert.type} className={classes.alert}>
-                    <AlertTitle>{alert.title}</AlertTitle>
-                    {alert.text}
-                </Alert>
-            )}
-            <main>
-                {start && questionState.currentQuestion !== exam.questions.length && (
-                    <>
-                        <div>
-                            <Question
-                                title={exam?.questions[questionState.currentQuestion].title}
-                                imageURL={
-                                    exam?.questions[questionState.currentQuestion].imageURL
-                                }
-                                choices={exam?.questions[questionState.currentQuestion].choices}
-                                number={questionState.currentQuestion + 1}
-                                onSolved={updateAnswer}
-                            />
-                        </div>
-                        <div className={`${classes.mainFooter}`}>
-                            <button
-                                onClick={handleCheckAnswer}
-                                className={`${classes.checkAnswerBtn}`}
-                                disabled={questionState.answer === null}
-                            >
-                                Check answer
-                            </button>
-                            <button
-                                onClick={handleNextQuestion}
-                                className={`${classes.nextBtn}`}
-                            >
-                                {questionState.currentQuestion === exam.questions.length - 1
-                                    ? 'See the results'
-                                    : 'Next'}
-                            </button>
-                        </div>
-                    </>
-                )}
-                {questionState.currentQuestion === exam?.questions.length && (
-                    <>
-                        {questionState.numberOfCorrectAnswers ===
-                            exam?.questions.length && (
-                                <div className={`${classes.all}`}>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}
-                                    >
-                                        <AiOutlineStar
-                                            style={{
-                                                fontSize: '5rem',
-                                                color: '#f9d71c',
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}
-                                        />
-                                    </div>
-                                    <h1>
-                                        You Passed!.
-                                    </h1>
-                                    <p>
-                                        You got {questionState.numberOfCorrectAnswers} out of{' '}
-                                        {questionState.numberOfCorrectAnswers}
-                                    </p>
-                                </div>
-                            )}
-
-                        {questionState.numberOfCorrectAnswers !==
-                            exam?.questions.length && (
-                                <div className={`${classes.notAll}`}>
-                                    {/* sad icon */}
-                                    <h1>
-                                        Go Study!{' '}
-                                        <span role='img' aria-label='emoji'>
-                                            😊
-                                        </span>
-                                    </h1>
-                                    <p>
-                                        You got {questionState.numberOfCorrectAnswers} out of{' '}
-                                        {exam?.questions.length}
-                                    </p>
-                                </div>
-                            )}
-                    </>
-                )}
-            </main>
-            <footer>
-                {!start && (
-                    <button
-                        onClick={() => {
-                            setStart(true);
+        <>
+            <Navbar />
+            <div className={classes.exam}>
+                <header>
+                    <h1>Short Exam: {exam?.title}</h1>
+                    <p
+                        style={{
+                            color: 'gray',
+                            fontSize: '0.8rem',
+                            textAlign: 'center',
                         }}
-                        className={`${classes.startBtn}`}
                     >
-                        Start Exam
-                    </button>
+                        {exam?.title} | {exam?.questions.length} questions |{' '}
+                        {exam?.duration} minutes
+                    </p>
+                </header>
+                {alert && (
+                    <Alert severity={alert.type} className={classes.alert}>
+                        <AlertTitle>{alert.title}</AlertTitle>
+                        {alert.text}
+                    </Alert>
                 )}
-            </footer>
-        </div>
+                <main>
+                    {start && questionState.currentQuestion !== exam.questions.length && (
+                        <>
+                            <div>
+                                <Question
+                                    title={exam?.questions[questionState.currentQuestion].title}
+                                    imageURL={
+                                        exam?.questions[questionState.currentQuestion].imageURL
+                                    }
+                                    choices={exam?.questions[questionState.currentQuestion].choices}
+                                    number={questionState.currentQuestion + 1}
+                                    onSolved={updateAnswer}
+                                />
+                            </div>
+                            <div className={`${classes.mainFooter}`}>
+                                <button
+                                    onClick={handleCheckAnswer}
+                                    className={`${classes.checkAnswerBtn}`}
+                                    disabled={questionState.answer === null}
+                                >
+                                    Check answer
+                                </button>
+                                <button
+                                    onClick={handleNextQuestion}
+                                    className={`${classes.nextBtn}`}
+                                >
+                                    {questionState.currentQuestion === exam.questions.length - 1
+                                        ? 'See the results'
+                                        : 'Next'}
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    {questionState.currentQuestion === exam?.questions.length && (
+                        <>
+                            {questionState.numberOfCorrectAnswers ===
+                                exam?.questions.length && (
+                                    <div className={`${classes.all}`}>
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}
+                                        >
+                                            <AiOutlineStar
+                                                style={{
+                                                    fontSize: '5rem',
+                                                    color: '#f9d71c',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}
+                                            />
+                                        </div>
+                                        <h1>
+                                            You Passed!.
+                                        </h1>
+                                        <p>
+                                            You got {questionState.numberOfCorrectAnswers} out of{' '}
+                                            {questionState.numberOfCorrectAnswers}
+                                        </p>
+                                    </div>
+                                )}
+
+                            {questionState.numberOfCorrectAnswers !==
+                                exam?.questions.length && (
+                                    <div className={`${classes.notAll}`}>
+                                        {/* sad icon */}
+                                        <h1>
+                                            Go Study!{' '}
+                                            <span role='img' aria-label='emoji'>
+                                                😊
+                                            </span>
+                                        </h1>
+                                        <p>
+                                            You got {questionState.numberOfCorrectAnswers} out of{' '}
+                                            {exam?.questions.length}
+                                        </p>
+                                    </div>
+                                )}
+                        </>
+                    )}
+                </main>
+                <footer>
+                    {!start && (
+                        <button
+                            onClick={() => {
+                                setStart(true);
+                            }}
+                            className={`${classes.startBtn}`}
+                        >
+                            Start Exam
+                        </button>
+                    )}
+                </footer>
+            </div>
+        </>
     );
 }
 

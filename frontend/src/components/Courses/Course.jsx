@@ -26,6 +26,10 @@ const Course = () => {
     const Price = course.Price
     const rating = course.Rating
 
+
+    const URL = `/exam/${title}/`
+
+
     return (
         <div>
             <Navbar />
@@ -45,7 +49,7 @@ const Course = () => {
                     </div>
                 </div>
                 <iframe className="video" width="966" height="543" src="https://www.youtube.com/embed/fzxEECHnsvU" title="Material UI 5 (MUI) React Tutorial | MUI Responsive Real Project" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                {/* <button onClick={postData}>Exam2</button> */}
+                <NavLink to={URL + "Exam2"}>Exam2</NavLink>
             </section >
         </div >
     )
