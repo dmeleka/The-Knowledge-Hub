@@ -4,6 +4,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Home/Navbar';
 import Rating from '@mui/material/Rating';
+import Exam from './Exam';
 
 const Course = () => {
 
@@ -42,11 +43,9 @@ const Course = () => {
                         </div>
                         <NavLink className='enroll' to='/enroll'>Enroll for {Price}$ <br /> <h1 className='starts'> Start Now</h1></NavLink>
                     </div>
-
                 </div>
-                <NavLink onClick={navigate('/Title/??????')} to="/">??????</NavLink>
                 <iframe className="video" width="966" height="543" src="https://www.youtube.com/embed/fzxEECHnsvU" title="Material UI 5 (MUI) React Tutorial | MUI Responsive Real Project" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+                <button onClick={postData}>Exam2</button>
             </section >
         </div >
     )

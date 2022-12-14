@@ -1,44 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { makeStyles } from '@material-ui/core';
+import { duration, makeStyles } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Question from './Question';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AiOutlineStar } from 'react-icons/ai';
 import Navbar from '../Home/Navbar';
 
-
-// const exam = {
-//     duration: 60,
-//     title: 'Exam 1',
-//     questions: [
-//         {
-//             title: 'What is the capital of France?',
-//             choices: ['Paris', 'London', 'Berlin', 'Rome'],
-//             answer: 0,
-//         },
-//         {
-//             title: 'What is the capital of Germany?',
-//             choices: ['Paris', 'London', 'Berlin', 'Rome'],
-//             answer: 2,
-//         },
-//         {
-//             title: 'What is the capital of Italy?',
-//             choices: ['Paris', 'London', 'Berlin', 'Rome'],
-//             answer: 3,
-//         },
-//         {
-//             title: 'What is the capital of Spain?',
-//             choices: ['Paris', 'London', 'Berlin', 'Rome'],
-//             answer: 3,
-//         },
-//         {
-//             title: 'What is the capital of England?',
-//             choices: ['Paris', 'London', 'Berlin', 'Rome'],
-//             answer: 1,
-//         },
-//     ],
-// };
+const exam = {
+    duration: 60,
+    title: 'Exam2',
+    questions: [
+        {
+            title: 'What is the capital of France?',
+            imageURL:
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1200px-Flag_of_France.svg.png',
+            choices: ['Paris', 'London', 'Berlin', 'Rome'],
+            answer: 0,
+        },
+        {
+            title: 'What is the capital of Germany?',
+            imageURL:
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/1200px-Flag_of_Germany.svg.png',
+            choices: ['Paris', 'London', 'Berlin', 'Rome'],
+            answer: 2,
+        },
+        {
+            title: 'What is the capital of Italy?',
+            imageURL:
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/1200px-Flag_of_Italy.svg.png',
+            choices: ['Paris', 'London', 'Berlin', 'Rome'],
+            answer: 3,
+        },
+        {
+            title: 'What is the capital of Spain?',
+            imageURL:
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1200px-Flag_of_Spain.svg.png',
+            choices: ['Paris', 'London', 'Berlin', 'Rome'],
+            answer: 0,
+        },
+        {
+            title: 'What is the capital of England?',
+            imageURL:
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/1200px-Flag_of_England.svg.png',
+            choices: ['Paris', 'London', 'Berlin', 'Rome'],
+            answer: 1,
+        },
+    ],
+};
 
 const useStyles = makeStyles((theme) => ({
     exam: {
@@ -109,37 +118,38 @@ const initialState = {
     numberOfCorrectAnswers: 0,
 };
 
-// function Exam({ questions, title, duration }) {
+// export function Exam({ questions, title, duration }) {
 const Exam = () => {
-    const navigate = useNavigate()
-    const { ExamTitle } = useParams()
-    const { CourseTitle } = useParams()
-    const [exam, setExam] = useState('')
-
-    useEffect(() => {
-        Axios.get('http://localhost:8000/course/getExam', {
-            params: {
-                CourseTitle,
-                ExamTitle
-            }
-
-        }).then(res => {
-            let tmp = Object.values(res.data['data']);
-            let coursesData = tmp[0];
-            setExam(res.data)
-        })
-    }, [navigate])
 
     const classes = useStyles();
-    // const exam = {
-    //     // duration,
-    //     // title,
-    //     questions,
-    // };
-    // console.log(exam);
     const [start, setStart] = useState(false);
     const [questionState, setQuestionState] = useState(initialState);
     const [alert, setAlert] = useState(null);
+
+
+    const { CourseTite } = useParams()
+    const { ExamTitle } = useParams()
+    const [d, setD] = useState(0)
+    const [t, setT] = useState('')
+    const [qs, setQuestions] = useState([])
+
+
+    const postData = () => {
+        Axios.post(`http://localhost:8000/courses/getExam/${CourseTite}/${ExamTitle}`
+        ).then(res => {
+            setQuestions(res.data.questions[0]);
+            setT(res.data.title)
+            setD(res.data.duration)
+        })
+    }
+
+    // const exam = {
+    //     duration: d,
+    //     title: t,
+    //     questions: qs,
+    // };
+
+    console.log(exam);
 
     const updateAnswer = (answerText) => {
         const answerNumber =
@@ -189,7 +199,6 @@ const Exam = () => {
 
     return (
         <div className={classes.exam}>
-            <Navbar />
             <header>
                 <h1>Short Exam: {exam?.title}</h1>
                 <p
@@ -310,4 +319,4 @@ const Exam = () => {
     );
 }
 
-export default Exam;
+export default Exam
