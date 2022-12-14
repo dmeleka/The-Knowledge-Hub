@@ -11,7 +11,7 @@ const Home = () => {
             <Navbar />
             <section id="home">
                 <div className="container">
-                    <div className="row justify-content-left">
+                    <div className="row justify-content-left ">
                         <div className="col-md-8 mt-5">
                             {/* <h1 className="display-4 fw-bolder mb-4 text-left text-black">Learn Without Limits</h1> */}
                             <h1 className="home-head">Learn <b>Without</b> <br /> Limits</h1>

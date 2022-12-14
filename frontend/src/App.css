@@ -49,7 +49,7 @@
 
 /* Search */
 .search-div {
-    margin-right: 180px;
+    margin-right: 150px;
 }
 
 .search {
@@ -299,6 +299,10 @@ nav .navbar-brand:hover {
 .logo {
     scale: 0.7;
     margin-right: 10px;
+}
+
+.logob {
+    scale: 0.3
 }
 
 #main-container {
