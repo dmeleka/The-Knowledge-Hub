@@ -371,9 +371,14 @@ nav .navbar-brand:hover {
 }
 
 /* Course */
-.top {
+.course-top {
     display: flex;
     background: linear-gradient(90deg, rgb(26, 73, 194) 20%, rgba(0, 212, 255, 1) 100%);
+}
+
+.course-bottom {
+    display: flex;
+    flex-wrap: wrap
 }
 
 .content {
@@ -491,4 +496,51 @@ input[type="radio"] {
 .my-results {
     padding: 1rem;
     border: 1px solid goldenrod;
+}
+
+.video {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 400px;
+}
+
+.examBtn {
+    text-decoration: none;
+    border-radius: 2px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background-color: rgb(30, 80, 202);
+    border: none;
+    color: white;
+    margin: auto;
+    text-decoration: none;
+    font-size: small;
+    font-weight: 600;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.examBtn:hover {
+    color: white;
+    background-color: rgb(16, 61, 176);
+}
+
+.subtitle {
+
+
+    flex: 0 0 100%;
+}
+
+.subtitle-right {
+    max-width: 30%;
+    display: inline-block;
+    margin-right: 400px;
+    height: 100%;
+}
+
+.subtitle-left {
+    max-width: 70%;
+    display: inline-block;
 }

@@ -4,12 +4,18 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Home/Navbar';
 import Rating from '@mui/material/Rating';
-import Exam from './Exam';
 
 const Course = () => {
 
     const { title } = useParams()
     const [course, setCourse] = useState([])
+    const [video, setVideo] = useState("")
+    const [subtitles, setSubtitles] = useState([])
+    const [subtitleVideos, setSubtitleVideos] = useState([])
+    const [subtitleHours, setSubtitleHours] = useState([])
+    const [exams, setExams] = useState([])
+    let examTitle = ""
+
 
 
     const navigate = useNavigate()
@@ -29,12 +35,62 @@ const Course = () => {
 
     const URL = `/exam/${title}/`
 
+    useEffect(() => {
+        Axios.get(`http://localhost:8000/courses/getVideo/${title}`).then(res => {
+            setVideo(res.data.link)
+        })
+
+        Axios.get(`http://localhost:8000/courses/getSubtitles/${title}`).then(res => {
+            setSubtitles(res.data.Subtitles)
+            setSubtitleHours(res.data.SubtitleHours)
+            setSubtitleVideos(res.data.SubtitleVideos)
+            console.log(subtitleVideos);
+        })
+
+        Axios.get(`http://localhost:8000/courses/getExams/${title}`).then(res => {
+            setExams(res.data.data)
+        })
+    }, [navigate])
+
+    const arr = subtitles.map((s) => {
+        let hasExam = false;
+        let i = 0
+        let subtitleVideo = subtitleVideos[i]
+
+        if (exams.length != 0) {
+            exams.map((e) => {
+                if (s === e[1]) {
+                    examTitle = e[1]
+                    hasExam = true
+                }
+            })
+        }
+        i++
+
+        return (
+            <div class="subtitle">
+                <div className='subtitle-right'>
+                    <h2>{s}</h2>
+                    {hasExam &&
+                        <NavLink className="examBtn" to={URL + examTitle}>Exercise</NavLink>
+                    }
+                </div>
+                <div className='subtitle-left'>
+                    <iframe className="subtitleVideo" width="500" height="350" src={subtitleVideo} title="video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                </div>
+            </div>
+
+
+
+        )
+    })
 
     return (
         <div>
             <Navbar />
             <section id="course">
-                <div className='top'>
+                <div className='course-top'>
                     <div className='content'>
                         <div>
                             <h1 className='title'>{title}</h1>
@@ -47,9 +103,12 @@ const Course = () => {
                         </div>
                         <NavLink className='enroll' to='/enroll'>Enroll for {Price}$ <br /> <h1 className='starts'> Start Now</h1></NavLink>
                     </div>
+                    <iframe className="video" width="500" height="350" src={video} title="video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
-                <iframe className="video" width="966" height="543" src="https://www.youtube.com/embed/fzxEECHnsvU" title="Material UI 5 (MUI) React Tutorial | MUI Responsive Real Project" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <NavLink to={URL + "Exam2"}>Exam2</NavLink>
+                <div className='course-bottom'>
+                    {arr}
+                </div>
+
             </section >
         </div >
     )
