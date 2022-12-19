@@ -42,3 +42,55 @@ export const getExam = async (req, res) => {
 
 }
 
+export const getVideo = async (req, res) => {
+    try {
+        const Link = (await Course.findOne({ Title: req.params.CourseTitle })).CoursePreviewLink;
+        res.status(200).json({
+            status: 'Success',
+            link: Link
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            message: error
+        })
+    }
+
+}
+
+export const getSubtitles = async (req, res) => {
+    try {
+        const Subitles = (await Course.findOne({ Title: req.params.CourseTitle })).Subtitles;
+        const SubitleHours = (await Course.findOne({ Title: req.params.CourseTitle })).SubtitlesHours;
+        const SubitleVideos = (await Course.findOne({ Title: req.params.CourseTitle })).SubtitlesVideos;
+        res.status(200).json({
+            status: 'Success',
+            Subtitles: Subitles,
+            SubtitleHours: SubitleHours,
+            SubtitleVideos: SubitleVideos
+
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            message: error
+        })
+    }
+
+}
+
+export const getExams = async (req, res) => {
+    try {
+        const exams = (await Course.findOne({ Title: req.params.CourseTitle })).ExercisesQuestions;
+        res.status(200).json({
+            status: 'Success',
+            data: exams
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed',
+            message: error
+        })
+    }
+
+}
