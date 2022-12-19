@@ -31,6 +31,16 @@ const instructorSchema = new Schema({
         type: String,
         required: false,
         default: "De"
+    },
+    Ratings: {
+        type: [],
+        required: false,
+        default: []
+    },
+    Rating: {
+        type: Number,
+        required: false,
+        default: 0
     }
 }, { timestamps: true });
 
