@@ -125,7 +125,8 @@ export const addVideoLink = async (req, res) => {
 
 export const addPreviewLink = async (req, res) => {
     try {
-        await Course.updateOne({ Title: req.body.Title }, { CoursePreviewLink: req.body.Link });
+        const link = "https://www.youtube.com/embed/" + req.body.Link.split("=")[1];
+        await Course.updateOne({ Title: req.body.Title }, { CoursePreviewLink: link });
         res.status(200).json({
             status: 'Success'
         })
@@ -182,5 +183,64 @@ export const addDiscount = async (req, res) => {
         res.status(500).json({
             status: 'Failed'
         })
+    }
+}
+
+export const getRating = async (req, res) => {
+    try {
+        const instructor = await Instructor.findOne({ username: req.body.username });
+        const rating = instructor.Rating
+        res.status(200).json({
+            rating: rating,
+            status: 'Success'
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed'
+        })
+    }
+}
+
+export const getCourseRating = async (req, res) => {
+    try {
+        const Course = await Instructor.findOne({ title: req.body.title });
+        const rating = Course.Rating
+        res.status(200).json({
+            rating: rating,
+            status: 'Success'
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed'
+        })
+    }
+}
+
+export const searchMyCourses = async (req, res) => {
+    const courses = await Course.find({ InstructorUsername: req.body.InstructorUsername });
+    const course = [];
+    for (let i = 0; i < courses.length; i++) {
+        if ((courses[i].Title).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
+
+        }
+        else if ((courses[i].InstructorName).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
+
+        }
+        else if ((courses[i].Subject).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
+        }
+    }
+    if (courses.length != 0) {
+        res.status(200).json({
+            status: 'Success',
+            data: {
+                course
+            }
+        })
+    }
+    else {
+        res.status(404).json({ message: "Not Found" });
     }
 }
