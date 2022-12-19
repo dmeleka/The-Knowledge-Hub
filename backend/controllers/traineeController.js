@@ -12,7 +12,7 @@ export const addIndTrainee = (req, res) => {
 }
 export const rateInstructor = async (req, res) => {
     try {
-        await Instructor.updateOne({ username: req.query.username }, { Rating: req.body.Rating });
+        await Instructor.updateOne({ username: req.params.username }, { $set: { Rating: req.body.Rating } });
         res.status(200).json({
             status: 'Success',
         })
@@ -25,7 +25,7 @@ export const rateInstructor = async (req, res) => {
 }
 export const rateCourse = async (req, res) => {
     try {
-        await Courses.updateOne({ Title: req.query.Title }, { Rating: req.body.Rating });
+        await Courses.updateOne({ Title: req.params.title }, { $set: { Rating: req.body.Rating } });
         res.status(200).json({
             status: 'Success',
         })
