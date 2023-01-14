@@ -15,12 +15,15 @@ export const addCourse = async (req, res) => {
         } else {
             const newCourse = new Course(req.body);
             let tLinks = [""];
+            let attendance = [0]
             let emptyCount = newCourse.Subtitles.length-1;
             while(emptyCount>0){
                 tLinks.push("");
+                attendance.push(0);
                 emptyCount--;
             }
             newCourse.SubtitlesVideos = tLinks;
+            newCourse.Attendance = attendance;
             await newCourse.save();
             res.send("Course added");
         }

@@ -26,6 +26,10 @@ const traineeSchema = new Schema({
         type: String,
         required: false,
         default: "DE"
+    },
+    Wallet: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 

@@ -1,6 +1,7 @@
 import Admin from '../models/adminModel.js';
 import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
+import refundRequest from '../models/refundRequestModel.js';
 
 export const addAdmin = async (req,res) =>{
     try{
@@ -69,4 +70,11 @@ export const addCorpTrainee = async (req,res) =>{
     }catch(error){
         res.status(404).json({message: error.message});
     }
+}
+
+export const sendRefund = async(req,res) =>{
+    const refundAmount = (await refundRequest.findOne({tusername: req.body.tusername, cTitle: req.body.cTitle})).refundAmount;
+    const newWallet = (await Trainee.findOne({username: req.body.tusername})).Wallet + refundAmount;
+    await Trainee.updateOne({username: req.body.tusername}, {Wallet: newWallet});
+    res.send("Success");
 }
