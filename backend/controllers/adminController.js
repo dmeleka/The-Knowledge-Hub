@@ -2,7 +2,7 @@ import Admin from '../models/adminModel.js';
 import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import refundRequest from '../models/refundRequestModel.js';
-import Report from '../models/ReportModel.js';
+import Report from '../models/reportModel.js';
 import Course from '../models/courseModel.js';
 
 export const addAdmin = async (req,res) =>{
@@ -78,6 +78,7 @@ export const sendRefund = async(req,res) =>{
     const refundAmount = (await refundRequest.findOne({tusername: req.body.tusername, cTitle: req.body.cTitle})).refundAmount;
     const newWallet = (await Trainee.findOne({username: req.body.tusername})).Wallet + refundAmount;
     await Trainee.updateOne({username: req.body.tusername}, {Wallet: newWallet});
+    await Trainee.updateOne({username: req.body.tusername},{ $pull: {enrolledCourses: {title: req.body.cTitle} }});
     res.send("Success");
 }
   

@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
-const ReportSchema = mongoose.Schema(
+const reportSchema = new Schema(
   {
     title: {
       type: String,
@@ -38,4 +39,5 @@ const ReportSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Report', ReportSchema);
+const reportModel = mongoose.model('reportModel', reportSchema);
+export default reportModel;

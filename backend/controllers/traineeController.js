@@ -5,42 +5,45 @@ import Instructor from '../models/instructorModel.js';
 import Courses from '../models/courseModel.js';
 import nodemailer from 'nodemailer';
 
-export const addIndTrainee = (req, res) => {
-    const trainee = new Trainee(req.body)
-    trainee.save().then(data => {
-        res.json(data)
-    }).catch(e => {
-        res.json({ message: e })
-    })
-}
-
 export const reqRefund = async (req, res) => {
-    const courseAttend = (await Course.findOne({Title: req.body.Title})).Attendance;
-    const coursePrice = (await Course.findOne({Title: req.body.Title})).Price;
-    const maxAttend = Math.ceil(courseAttend.length/2);
-    let attended = 0;
-    courseAttend.forEach(x => {
-        if(x == 1){
-            attended++;
+    let progress = -1;
+    let coursePrice = -1;
+    const course = await Course.findOne({ Title: req.body.Title });
+    if (course) {
+        coursePrice = course.Price;
+    }
+    const enrolledCourses = (await Trainee.findOne({ username: req.body.username })).enrolledCourses;
+    for (let i = 0; i < enrolledCourses.length; i++) {
+        if (enrolledCourses[i].title == req.body.Title) {
+            progress = enrolledCourses[i].progress;
         }
-    });
-    const newRefundRequest = new refundRequest({tusername: req.body.username, cTitle: req.body.Title, refundAmount: coursePrice});
-    refundRequest.findOne({tusername: req.body.username, cTitle: req.body.Title}, (err,doc) => {
-        if(err){
+    }
+    if (progress < 50 && progress != -1) {
+        const newRefundRequest = new refundRequest({ tusername: req.body.username, cTitle: req.body.Title, refundAmount: coursePrice });
+        refundRequest.findOne({ tusername: req.body.username, cTitle: req.body.Title }, (err, doc) => {
+            if (err) {
 
-        }else if(doc){
-            res.send("Request already submitted");
-        }else{
-            newRefundRequest.save();
-            res.send("Success");
-        }
-    })
+            } else if (doc) {
+                res.send("Request already submitted");
+            } else {
+                newRefundRequest.save();
+                res.send("Success");
+            }
+        })
+    }
+    else {
+        res.send('You exceded 50% of the course progress')
+    }
 }
 
 export const getWallet = async (req, res) => {
-    const tWallet = (await Trainee.findOne({username: req.body.username})).Wallet;
-    res.json({Wallet: tWallet});
-} 
+    const tWallet = 0;
+    const trainee = await Trainee.findOne({ username: req.body.username });
+    if (trainee) {
+        tWallet = trainee.Wallet;
+    }
+    res.json({ Wallet: tWallet });
+}
 
 
 export const addIndTrainee = async (req, res) => {

@@ -63,10 +63,6 @@ const courseSchema = new Schema({
         type: String,
         required: false,
         default: ""
-    },
-    Attendance: {
-        type: Array,
-        required: false
     }
 }, { timestamps: true });
 

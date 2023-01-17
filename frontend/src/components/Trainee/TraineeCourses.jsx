@@ -10,6 +10,8 @@ const TraineeCourses = () => {
     const [courses, setCourses] = useState([])
     const [loginStatus, setLoginStatus] = useState(false)
     const { username } = useParams()
+    let Title = ''
+    const wallet = 0;
 
     const navigate = useNavigate()
 
@@ -25,6 +27,11 @@ const TraineeCourses = () => {
         }
     })
 
+    Axios.get(`http://localhost:8000/trainee/getWallet`,
+    ).then(res => {
+        wallet = res.data.Wallet;
+    })
+
     useEffect(() => {
         Axios.get(`http://localhost:8000/trainee/enrolledCourses/${username}`)
             .then(res => {
@@ -33,10 +40,28 @@ const TraineeCourses = () => {
             }).catch(err => console.log(err))
     }, [navigate])
 
+    function refund(title) {
+        Title = title;
+        // e.preventDefault();
+        Axios.post('http://localhost:8000/trainee/reqRefund', {
+            username,
+            Title
+
+        }).then(res => { })
+    }
+
     const arr = courses.map((c) => {
         let url = "/course/" + c.title
+        let f = false
+        if (c.progress < 50) {
+            f = true
+        }
+
         return (
             <div class="cardEnrolled">
+                {f &&
+                    <button onClick={() => refund(c.title)} className='refund'>Refund</button>
+                }
                 <NavLink className="cardlink" to={url}>
                     {/* <img className="card-img-top" src="/course Photos/python.png" alt="Card image cap" /> */}
                     <div className="card-bodyProgress">
@@ -71,6 +96,9 @@ const TraineeCourses = () => {
                         </li>
                         <li className="traineeMenuItem">
                             <button className="traineeMenuBtn">Settings</button>
+                        </li>
+                        <li className="traineeMenuItem">
+                            <p className="traineeMenuBtn">Wallet {wallet}$</p>
                         </li>
                     </ul>
                 </div>

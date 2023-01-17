@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyJWT } from '../controllers/authController.js';
-import { addIndTrainee, rateInstructor, rateCourse, enrolledCourses, enroll, updateProgress, isEnrolled, isLoggedIn, reqRefund } from '../controllers/traineeController.js';
+import { addIndTrainee, rateInstructor, rateCourse, enrolledCourses, enroll, updateProgress, isEnrolled, isLoggedIn, reqRefund, getWallet } from '../controllers/traineeController.js';
 
 const router = express.Router();
 

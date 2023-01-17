@@ -2,7 +2,7 @@ import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import Admin from '../models/adminModel.js';
 import Courses from '../models/courseModel.js';
-import Report from '../models/ReportModel.js';
+import Report from '../models/reportModel.js';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken'
 

@@ -9,6 +9,7 @@ const TraineeHome = () => {
     const navigate = useNavigate()
 
     const { username } = useParams()
+    const wallet = 0;
 
     const nav = () => {
         navigate(`/${username}/myCourses`)
@@ -20,6 +21,11 @@ const TraineeHome = () => {
         if (!res.data.loggedIn) {
             navigate(`/login`)
         }
+    })
+
+    Axios.get(`http://localhost:8000/trainee/getWallet`,
+    ).then(res => {
+        wallet = res.data.Wallet;
     })
 
     return (
@@ -39,6 +45,9 @@ const TraineeHome = () => {
                         </li>
                         <li className="traineeMenuItem">
                             <button className="traineeMenuBtn">Settings</button>
+                        </li>
+                        <li className="traineeMenuItem">
+                            <p className="traineeMenuBtn">Wallet {wallet}$</p>
                         </li>
                     </ul>
                 </div>
