@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Axios from 'axios';
-import { NavLink } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Navbar from '../Home/Navbar';
 
 const Login = () => {
@@ -12,6 +11,14 @@ const Login = () => {
 
     const navigate = useNavigate()
 
+    Axios.get(`http://localhost:8000/trainee/isLoggedIn`, {
+        headers: { "x-access-token": localStorage.getItem("token") }
+    }).then(res => {
+        if (res.data.loggedIn) {
+            navigate(`/${res.data.username}`)
+        }
+    })
+
     const postData = (e) => {
         e.preventDefault();
         Axios.post('http://localhost:8000/login', {
@@ -20,7 +27,7 @@ const Login = () => {
 
         }).then(res => {
             if (!res.data.auth) {
-                alert("User Not Found")
+                alert("Wrong username or password")
                 setLoginStatus(false);
             }
             else {
@@ -28,7 +35,7 @@ const Login = () => {
                 localStorage.setItem("token", res.data.token)
                 setLoginStatus(true);
                 if (res.data.type === "T") {
-                    navigate('/traineeHome')
+                    navigate(`/${username}`)
                 }
                 else if (res.data.type === "I") {
                     navigate('/instructorHome')
@@ -39,6 +46,8 @@ const Login = () => {
             }
         })
     }
+
+
 
     // Axios.get('http://localhost:8000/login').then(res => {
     //     if (res.data.auth) {
