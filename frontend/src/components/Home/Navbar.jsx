@@ -20,11 +20,25 @@ const Navbar = () => {
         })
     }
 
+    var langItems = document.getElementsByClassName("language-item");
+    var btnImage = document.getElementById("btn-img");
+    var btnTitle = document.getElementById("btn-title");
+
+    for (var i = 0; i < langItems.length; i++) {
+        var langItem = langItems[i];
+        langItem.onclick = changeCountry;
+    }
+
+    function changeCountry(e) {
+        btnImage.src = "assets/" + this.dataset.lang + ".svg";
+        btnTitle.innerText = this.dataset.lang;
+    }
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light" id="navbar-main">
                 <div className="container" id='main-container'>
-                    <img className='logo' src="logos.png" alt="logo" />
+                    <img className='logo' src="logo.png" />
                     <div className='search-div' >
                         <input type="text" class="search" id="search" placeholder="What do you want to learn?" onChange={(e) => setSearch(e.target.value)} />
                         <button type="submit" className="search-btn" onClick={Search}> <i className="fa fa-search"></i></button>
