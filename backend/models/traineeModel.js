@@ -35,6 +35,10 @@ const traineeSchema = new Schema({
         required: false,
         default: "DE"
     },
+    Wallet: {
+        type: Number,
+        default: 0
+    },
     enrolledCourses: {
         type: [],
         required: false,

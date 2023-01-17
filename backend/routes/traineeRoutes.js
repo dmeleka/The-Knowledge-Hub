@@ -1,10 +1,12 @@
 import express from 'express';
 import { verifyJWT } from '../controllers/authController.js';
-import { addIndTrainee, rateInstructor, rateCourse, enrolledCourses, enroll, updateProgress, isEnrolled, isLoggedIn } from '../controllers/traineeController.js';
+import { addIndTrainee, rateInstructor, rateCourse, enrolledCourses, enroll, updateProgress, isEnrolled, isLoggedIn, reqRefund } from '../controllers/traineeController.js';
 
 const router = express.Router();
 
 router.post('/Register', addIndTrainee);
+router.post('/reqRefund', reqRefund);
+router.get('/getWallet', getWallet);
 router.post('/enroll/:title', verifyJWT, enroll);
 router.post('/updateProgress/:courseTitle/:examTitle', verifyJWT, updateProgress);
 router.post('/rateInstructor/:username', rateInstructor);

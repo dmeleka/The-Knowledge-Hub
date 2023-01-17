@@ -20,6 +20,7 @@ export const addCourse = async (req, res) => {
                 tLinks.push("");
                 emptyCount--;
             }
+            
             newCourse.SubtitlesVideos = tLinks;
             await newCourse.save();
             res.send("Course added");
