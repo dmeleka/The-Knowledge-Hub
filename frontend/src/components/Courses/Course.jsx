@@ -4,6 +4,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Home/Navbar';
 import Rating from '@mui/material/Rating';
+import { Button } from '@mui/material';
 
 const Course = () => {
 
@@ -13,6 +14,8 @@ const Course = () => {
     const [subtitles, setSubtitles] = useState([])
     const [subtitleVideos, setSubtitleVideos] = useState([])
     const [subtitleHours, setSubtitleHours] = useState([])
+    const [enrollStatus, setEnrollStatus] = useState(false)
+    const [loginStatus, setLoginStatus] = useState(false)
     const [exams, setExams] = useState([])
     let examTitle = ""
 
@@ -31,6 +34,7 @@ const Course = () => {
     const InstructorName = course.InstructorName
     const Price = course.Price
     const rating = course.Rating
+    const shortSummary = course.ShortSummary
 
 
     const URL = `/exam/${title}/`
@@ -40,17 +44,40 @@ const Course = () => {
             setVideo(res.data.link)
         })
 
-        Axios.get(`http://localhost:8000/courses/getSubtitles/${title}`).then(res => {
-            setSubtitles(res.data.Subtitles)
-            setSubtitleHours(res.data.SubtitleHours)
-            setSubtitleVideos(res.data.SubtitleVideos)
-            console.log(subtitleVideos);
+        Axios.get(`http://localhost:8000/courses/getSubtitles/${title}`, {
+            headers: { "x-access-token": localStorage.getItem("token") }
+        }).then(res => {
+            if (res.data.auth) {
+                setLoginStatus(true);
+                setSubtitles(res.data.Subtitles)
+                setSubtitleHours(res.data.SubtitleHours)
+                setSubtitleVideos(res.data.SubtitleVideos)
+                console.log(res.data.auth)
+            }
+        })
+
+        Axios.get(`http://localhost:8000/trainee/isEnrolled/${title}`, {
+            headers: { "x-access-token": localStorage.getItem("token") }
+        }).then(res => {
+            if (res.data.enrolled) {
+                setEnrollStatus(true);
+                console.log(res.data.enrolled)
+            }
         })
 
         Axios.get(`http://localhost:8000/courses/getExams/${title}`).then(res => {
             setExams(res.data.data)
         })
     }, [navigate])
+
+    const Enroll = () => {
+        // e.preventDefault();
+        Axios.post(`http://localhost:8000/trainee/enroll/${title}`, {}, {
+            headers: { "x-access-token": localStorage.getItem("token") }
+        }).then(res => {
+            console.log(res.data)
+        })
+    }
 
     const arr = subtitles.map((s) => {
         let hasExam = false;
@@ -72,7 +99,7 @@ const Course = () => {
                 <div className='subtitle-right'>
                     <h2>{s}</h2>
                     {hasExam &&
-                        <NavLink className="examBtn" to={URL + examTitle}>Exercise</NavLink>
+                        <NavLink className="examBtn" to={URL + examTitle}>Exam</NavLink>
                     }
                 </div>
                 <div className='subtitle-left'>
@@ -98,15 +125,22 @@ const Course = () => {
                                 <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
                                 <p className='rating-text'>{rating}</p>
                             </div>
+                            <p className='courseSummary'>{shortSummary}</p>
                             <br />
                             <NavLink className='inst' to='/instructor'>{InstructorName}</NavLink>
                         </div>
-                        <NavLink className='enroll' to='/enroll'>Enroll for {Price}$ <br /> <h1 className='starts'> Start Now</h1></NavLink>
+                        {!enrollStatus &&
+                            <button className='enroll' onClick={Enroll}>Enroll for {Price}$ <br /> <h1 className='starts'> Start Now</h1></button>
+                        }
                     </div>
                     <iframe className="video" width="500" height="350" src={video} title="video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div className='course-bottom'>
-                    {arr}
+                    {enrollStatus && loginStatus &&
+                        <>
+                            {arr}
+                        </>
+                    }
                 </div>
 
             </section >

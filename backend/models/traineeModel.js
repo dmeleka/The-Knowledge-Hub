@@ -22,6 +22,10 @@ const traineeSchema = new Schema({
         type: String,
         required: true
     },
+    Gender: {
+        type: String,
+        required: true
+    },
     Corprate: {
         type: Boolean,
         default: false
@@ -30,6 +34,11 @@ const traineeSchema = new Schema({
         type: String,
         required: false,
         default: "DE"
+    },
+    enrolledCourses: {
+        type: [],
+        required: false,
+        default: []
     }
 }, { timestamps: true });
 
