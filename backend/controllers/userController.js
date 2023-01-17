@@ -2,29 +2,11 @@ import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import Admin from '../models/adminModel.js';
 import Courses from '../models/courseModel.js';
+import Report from '../models/ReportModel.js';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = "dhajdbajdbaldsjadlkabdkajbdklabdkadbfhabaiwaknzkvbnirsughiosL"
-
-export const verifyJWT = (req, res, next) => {
-    const token = req.headers["x-access-token"]
-    if (!token) {
-        res.send("No token found")
-        res.json({ auth: false, message: "failed to auth" })
-    }
-    else {
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if (err) {
-                res.json({ auth: false, message: "failed to auth" })
-            }
-            else {
-                req.UserId = decoded.id;
-                next();
-            }
-        })
-    }
-}
 
 export const setCountry = async (req, res) => {
     try {
@@ -42,28 +24,28 @@ export const setCountry = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    const userI = await Instructor.findOne({ username: req.body.username, Password: req.body.password })
-    const userT = await Trainee.findOne({ username: req.body.username, Password: req.body.password })
-    const userA = await Admin.findOne({ username: req.body.username, Password: req.body.password })
+    const userI = await Instructor.findOne({ username: req.body.username, password: req.body.password })
+    const userT = await Trainee.findOne({ username: req.body.username, password: req.body.password })
+    const userA = await Admin.findOne({ username: req.body.username, password: req.body.password })
     try {
         if (userI) {
             const id = userI._id.toString();
             const token = jwt.sign({ id }, JWT_SECRET, {
-                expiresIn: 300,
+                expiresIn: 600,
             })
             res.json({ auth: true, token: token, res: userI, type: "I" })
         }
         else if (userT) {
             const id = userT._id.toString();
             const token = jwt.sign({ id }, JWT_SECRET, {
-                expiresIn: 300,
+                expiresIn: 600,
             })
             res.json({ auth: true, token: token, res: userT, type: "T" })
         }
         else if (userA) {
             const id = userA._id.toString();
             const token = jwt.sign({ id }, JWT_SECRET, {
-                expiresIn: 300,
+                expiresIn: 600,
             })
             res.json({ auth: true, token: token, res: userA, type: "A" })
         }
@@ -242,15 +224,15 @@ export const forgotPassword = async (req, res) => {
         console.log(link)
 
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            service: 'hotmail',
             auth: {
-                user: 'tkh.noreply@gmail.com',
-                pass: 'zgxvmssqudlhlozw'
+                user: 'no-reply.tkh@outlook.com',
+                pass: '12345tkh'
             }
         });
 
         const mailOptions = {
-            from: 'noreply.theknowledgehub@gmail.com',
+            from: 'no-reply.tkh@outlook.com',
             to: user.email,
             subject: 'Reset Password',
             html: link
@@ -298,3 +280,21 @@ export const resetPassword = async (req, res) => {
     res.json({ success: true })
 
 }
+
+export const createreport = async (req, res) => {
+    const { title, status, type} = req.body;
+    // console.log('req.body ' + username,email,password,type);
+     if (
+       !status ||
+       !title ||
+       !type 
+       
+     ) {
+       throw new BadRequestError('Please provide all report values');
+     }
+     //req.body.createdBy = userId;
+   
+     const report = await Report.create(req.body);
+     res.status(StatusCodes.CREATED).json({ report });
+    
+  };
