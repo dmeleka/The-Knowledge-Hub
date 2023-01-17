@@ -15,15 +15,13 @@ export const addCourse = async (req, res) => {
         } else {
             const newCourse = new Course(req.body);
             let tLinks = [""];
-            let attendance = [0]
-            let emptyCount = newCourse.Subtitles.length-1;
-            while(emptyCount>0){
+            let emptyCount = newCourse.Subtitles.length - 1;
+            while (emptyCount > 0) {
                 tLinks.push("");
-                attendance.push(0);
                 emptyCount--;
             }
+            
             newCourse.SubtitlesVideos = tLinks;
-            newCourse.Attendance = attendance;
             await newCourse.save();
             res.send("Course added");
         }
@@ -110,10 +108,10 @@ export const editBio = async (req, res) => {
     }
 }
 
-export const addVideoLink = async(req,res)=>{
-    const subIdx = (await Course.findOne({Title: req.body.Title})).Subtitles.indexOf(req.body.Subtitle);
+export const addVideoLink = async (req, res) => {
+    const subIdx = (await Course.findOne({ Title: req.body.Title })).Subtitles.indexOf(req.body.Subtitle);
     try {
-        await Course.updateOne({Title: req.body.Title, SubtitlesVideos: ""},{$set:{ [`SubtitlesVideos.${subIdx}`] : req.body.Link}})
+        await Course.updateOne({ Title: req.body.Title, SubtitlesVideos: "" }, { $set: { [`SubtitlesVideos.${subIdx}`]: req.body.Link } })
         res.status(200).json({
             status: 'Success'
         })
@@ -123,12 +121,13 @@ export const addVideoLink = async(req,res)=>{
             message: error
         })
     }
-    
+
 }
 
-export const addPreviewLink = async(req,res)=>{
+export const addPreviewLink = async (req, res) => {
     try {
-        await Course.updateOne({Title:req.body.Title},{CoursePreviewLink:req.body.Link});
+        const link = "https://www.youtube.com/embed/" + req.body.Link.split("=")[1];
+        await Course.updateOne({ Title: req.body.Title }, { CoursePreviewLink: link });
         res.status(200).json({
             status: 'Success'
         })
@@ -139,51 +138,110 @@ export const addPreviewLink = async(req,res)=>{
         })
     }
 }
-export const addQuestion = async(req,res)=>{
-    try{
+export const addQuestion = async (req, res) => {
+    try {
         // await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesQuestions: req.body.Question}});
         // await Course.updateOne({Title: req.body.Title}, {$push:{ExercisesChoices:{
         //     $each:[req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD]
         // }}});
         // await Course.updateOne({Title: req.body.Title},{$push:{ExercisesAnswers: req.body.Answer}});
         let answerIdx = null;
-        if(req.body.Answer.toLowerCase() == "a"){
+        if (req.body.Answer.toLowerCase() == "a") {
             answerIdx = 0;
-        }else if(req.body.Answer.toLowerCase() == "b"){
+        } else if (req.body.Answer.toLowerCase() == "b") {
             answerIdx = 1;
-        }else if(req.body.Answer.toLowerCase() == "c"){
+        } else if (req.body.Answer.toLowerCase() == "c") {
             answerIdx = 2;
-        }else{
+        } else {
             answerIdx = 3;
         }
         const question = {
-            title:req.body.Question,
-            choices:[req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD],
+            title: req.body.Question,
+            choices: [req.body.ChoiceA, req.body.ChoiceB, req.body.ChoiceC, req.body.ChoiceD],
             answer: answerIdx
         };
         const exam = [req.body.Duration, req.body.ExamTitle, [question]];
-        await Course.updateOne({Title:req.body.Title}, {
-            $push: {ExercisesQuestions: exam}
+        await Course.updateOne({ Title: req.body.Title }, {
+            $push: { ExercisesQuestions: exam }
         })
         res.status(200).json({
-            status:'Success'
+            status: 'Success'
         })
-    }catch(error){
+    } catch (error) {
         res.status(500).json({
-            status:'Failed',
+            status: 'Failed',
             message: error
         })
     }
 }
-export const addDiscount = async(req,res)=>{
+export const addDiscount = async (req, res) => {
     try {
-        await Course.updateOne({Title: req.body.Title},{Discount:req.body.Discount, DiscountTime: req.body.DiscountTime});
+        await Course.updateOne({ Title: req.body.Title }, { Discount: req.body.Discount, DiscountTime: req.body.DiscountTime });
         res.status(200).json({
-            status:'Success'
-        })  
+            status: 'Success'
+        })
     } catch (error) {
         res.status(500).json({
-            status:'Failed'
+            status: 'Failed'
         })
+    }
+}
+
+export const getRating = async (req, res) => {
+    try {
+        const instructor = await Instructor.findOne({ username: req.body.username });
+        const rating = instructor.Rating
+        res.status(200).json({
+            rating: rating,
+            status: 'Success'
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed'
+        })
+    }
+}
+
+export const getCourseRating = async (req, res) => {
+    try {
+        const Course = await Instructor.findOne({ title: req.body.title });
+        const rating = Course.Rating
+        res.status(200).json({
+            rating: rating,
+            status: 'Success'
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'Failed'
+        })
+    }
+}
+
+export const searchMyCourses = async (req, res) => {
+    const courses = await Course.find({ InstructorUsername: req.body.InstructorUsername });
+    const course = [];
+    for (let i = 0; i < courses.length; i++) {
+        if ((courses[i].Title).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
+
+        }
+        else if ((courses[i].InstructorName).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
+
+        }
+        else if ((courses[i].Subject).toLowerCase().startsWith(req.body.search)) {
+            course.push(courses[i]);
+        }
+    }
+    if (courses.length != 0) {
+        res.status(200).json({
+            status: 'Success',
+            data: {
+                course
+            }
+        })
+    }
+    else {
+        res.status(404).json({ message: "Not Found" });
     }
 }

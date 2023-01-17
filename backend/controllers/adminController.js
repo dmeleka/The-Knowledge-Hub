@@ -2,6 +2,8 @@ import Admin from '../models/adminModel.js';
 import Instructor from '../models/instructorModel.js';
 import Trainee from '../models/traineeModel.js';
 import refundRequest from '../models/refundRequestModel.js';
+import Report from '../models/ReportModel.js';
+import Course from '../models/courseModel.js';
 
 export const addAdmin = async (req,res) =>{
     try{
@@ -78,3 +80,76 @@ export const sendRefund = async(req,res) =>{
     await Trainee.updateOne({username: req.body.tusername}, {Wallet: newWallet});
     res.send("Success");
 }
+  
+export const getAllReport = async (req, res) => {
+    const status=req.query.status;
+    const Questions = await Report.find({status}).populate("createdBy","username").populate("course","title");
+    res.status(200).json(Questions);
+};
+  
+export const getAllCourseRequest = async (req, res) => {
+   const courses= await CourseRequest.find({}).populate('createdBy', 'username').populate("course","title");
+    //const courses = await CoursesRequest.find({});
+    res.status(200).json(courses);
+}; // ! missing model
+ 
+export const updateReport = async (req, res) => {
+
+  //  console.log("id"+id ,state);
+    console.log("req.body"+req.body);
+    const report = await Report.findByIdAndUpdate(
+      {_id:req.body.id},
+      {
+        status: req.body.state
+      }
+    ).populate("createdBy","username").populate("course","title");
+    
+    res.status(200).json(report);
+};
+  
+export const updateCourseRequest = async (req, res) => {
+    let complete = [];
+    const { id } = req.body;
+    const{courseid,state}=req.body;
+    console.log("id:"+id)
+    const courserequest= await Course.findOne({
+      createdBy:id,
+      course:courseid
+    }).populate("createdBy","username").populate("course","title")  
+  if(state=="GRANTED"){
+    const user = await Trainee.findOne(
+      { _id: id }
+    );
+    for (let i = 0; i < courserequest.Subtitles.length; i++) {
+            complete.push({ Subtitle: c.Subtitles[i], Complete: false })
+        }
+    const course = {
+            title: courserequest.Title,
+            progress: 0,
+            instructorName: courserequest.InstructorName,
+            nSubtitles: complete.length,
+            ncomplete: 0,
+            isComplete: complete
+        };
+      user.enrolledCourses.push({course})
+      await user.save();
+   
+    if (courserequest!=null){
+    courserequest.state="GRANTED"
+    courserequest.save();}
+    }
+    else{
+      await CourseRequest.findOneAndDelete({
+        createdBy:id,
+        course:courseid
+      })
+    }
+
+    res.status(200).json(courserequest);
+}; // ! missing model
+  
+//   export const getallcourses = async (req, res) => {
+//     const courses= await Course.find({});
+//      //const courses = await CoursesRequest.find({});
+//      res.status(200).json(courses);
+//    };

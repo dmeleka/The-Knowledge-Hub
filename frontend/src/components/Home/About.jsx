@@ -15,8 +15,8 @@ const About = () => {
                             <h1 className="display-6 mb-2">Who <b>We</b> Are</h1>
                             <hr className="w-50" />
                             <p className="lead mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, aut, corrupti reiciendis pariatur unde illum beatae repellat recusandae facilis numquam possimus? Obcaecati ipsum quas tenetur sit recusandae velit labore error nobis voluptatibus incidunt tempore omnis, impedit eaque, laborum sunt modi voluptas expedita quos, dicta vel? Aut hic beatae cupiditate atque!</p>
-                            <button className="btn btn-primary rounded-pill px-4 py-2">Get Started</button>
-                            <button className="btn btn-outline-primary rounded-pill px-4 py-2 ms-2">Contact Us</button>
+                            <button className="btn btn-primary  px-4 py-2">Contact Us</button>
+                            {/* <button className="btn btn-outline-primary px-4 py-2 ms-2">Get Started</button> */}
                         </div>
                     </div>
                 </div>
