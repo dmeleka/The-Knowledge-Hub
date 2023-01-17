@@ -126,12 +126,11 @@ const Exam = () => {
     const [start, setStart] = useState(false);
     const [questionState, setQuestionState] = useState(initialState);
     const [alert, setAlert] = useState(null);
-
+    let once = true
 
     const { CourseTitle } = useParams()
     const { ExamTitle } = useParams()
     const [exam, setExam] = useState({ duration: 0, title: '', questions: [] })
-    let d = true
 
     Axios.get(`http://localhost:8000/courses/getExam/${CourseTitle}/${ExamTitle}`
     ).then(res => {
@@ -159,6 +158,15 @@ const Exam = () => {
             ...questionState,
             currentQuestion: questionState.currentQuestion + 1,
         });
+
+        if (questionState.numberOfCorrectAnswers === exam?.questions.length && once) {
+            Axios.post(`http://localhost:8000/trainee/updateProgress/${CourseTitle}/${ExamTitle}`, {}, {
+                headers: { "x-access-token": localStorage.getItem("token") }
+            }).then(res => {
+                console.log(res.data)
+            })
+            once = false
+        }
     };
 
     const handleCheckAnswer = () => {
