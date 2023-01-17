@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const TraineeNavbar = () => {
+
+    const [search, setSearch] = useState('')
+
+    const navigate = useNavigate()
+
+    const Search = (e) => {
+        e.preventDefault();
+        Axios.post('http://localhost:8000/search', {
+            search
+
+        }).then(res => {
+            console.log(search)
+            navigate(`/searchResults/${search}`)
+        })
+    }
+
+    const logOut = () => {
+        navigate('/')
+        localStorage.removeItem("token")
+    }
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light" id="navbar-main">
                 <div className="container" id='main-container'>
-                    <img className='logo' src="logos.png" alt="logo" />
+                    <img className='logo' src="logo.png" />
                     <div className='search-div' >
-                        <input type="text" class="search" id="search" placeholder="What do you want to learn?" />
-                        <button type="submit" className="search-btn"> <i className="fa fa-search"></i></button>
+                        <input type="text" class="search" id="search" placeholder="What do you want to learn?" onChange={(e) => setSearch(e.target.value)} />
+                        <button type="submit" className="search-btn" onClick={Search}> <i className="fa fa-search"></i></button>
                     </div>
                     <div className="main-drop-down-body">
                         <NavLink className="navbar-brand" to="/">The Knowledge Hub</NavLink>
@@ -20,7 +43,7 @@ const TraineeNavbar = () => {
                         </ul> */}
                     </div>
                     <div className='user-div'>
-                        <NavLink to="/" className="login-btn ">Log Out</NavLink>
+                        <button className="login-btn" onClick={logOut}>Log Out</button>
                     </div>
                     <div className="drop-down-body">
                         <button className="drop-down-btn">
