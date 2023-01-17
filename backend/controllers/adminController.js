@@ -74,19 +74,19 @@ export const addCorpTrainee = async (req,res) =>{
 }
   
   
-export const getAllreport = async (req, res) => {
+export const getAllReport = async (req, res) => {
     const status=req.query.status;
     const Questions = await Report.find({status}).populate("createdBy","username").populate("course","title");
     res.status(200).json(Questions);
 };
   
-export const getAllcourserequest = async (req, res) => {
+export const getAllCourseRequest = async (req, res) => {
    const courses= await CourseRequest.find({}).populate('createdBy', 'username').populate("course","title");
     //const courses = await CoursesRequest.find({});
     res.status(200).json(courses);
 }; // ! missing model
  
-export const updatereport = async (req, res) => {
+export const updateReport = async (req, res) => {
 
   //  console.log("id"+id ,state);
     console.log("req.body"+req.body);
@@ -100,7 +100,7 @@ export const updatereport = async (req, res) => {
     res.status(200).json(report);
 };
   
-export const updatecourserequest = async (req, res) => {
+export const updateCourseRequest = async (req, res) => {
     let complete = [];
     const { id } = req.body;
     const{courseid,state}=req.body;
