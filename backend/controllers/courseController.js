@@ -64,6 +64,7 @@ export const getSubtitles = async (req, res) => {
         const SubitleHours = (await Course.findOne({ Title: req.params.CourseTitle })).SubtitlesHours;
         const SubitleVideos = (await Course.findOne({ Title: req.params.CourseTitle })).SubtitlesVideos;
         res.status(200).json({
+            auth: true,
             status: 'Success',
             Subtitles: Subitles,
             SubtitleHours: SubitleHours,
