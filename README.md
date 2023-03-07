@@ -1,5 +1,7 @@
 # Online Learning System using MERN stack
 
+![Project img](./frontend/public/TKH.png "")
+
 # Outline
 
 - [Description](#description)
